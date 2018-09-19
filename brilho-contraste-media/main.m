@@ -27,7 +27,7 @@ for i=1:4
   % Aumentando o brilho 
   imagens{i,2} = imagens{i} + fatores(1); % +Brilho
   % Diminuindo o brilho
-  imagens{i,3} = imagens{i} + fatores(2); % -Brilho
+  imagens{i,3} = imagens{i} - fatores(2); % -Brilho
   % Aumentando o contraste
   imagens{i,4} = imagens{i} * fatores(3); % +Cont
   % Diminuindo o contraste
