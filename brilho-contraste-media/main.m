@@ -1,16 +1,14 @@
 clear; clc;
 
-pkg load image
-
 % Fatores de soma/multiplicacao: +bri, -bri, +cont, -cont
 fatores = [100, 50, 1.3, 0.7];
 
 % Leitura das imagens
 imagens = {
-  imread('arteriaBMP.bmp');
-  imread('FraturaJoelho.jpg');
-  imread('dedo.jpg');
-  imread('RXjoelho.jpg')
+  imread('../imagens-base/arteriaBMP.bmp');
+  imread('../imagens-base/FraturaJoelho.jpg');
+  imread('../imagens-base/dedo.jpg');
+  imread('../imagens-base/RXjoelho.jpg')
 };
 
 % Medias 
@@ -55,7 +53,7 @@ for i=1:4
     subplot(2,5,j+5);
     imhist(uint8(imagens{i,j}));
     title("Histograma"); 
-  endfor
-endfor
+    end
+end
 
 clear i j titulos;
