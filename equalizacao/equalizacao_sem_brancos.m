@@ -2,7 +2,7 @@
 im_in = imread('../imagens-base/Im_original.jpg');
 
 % Buscando os indices dos pixels que possuem valor zero
-indices_zeros = find(im_in < 7);
+indices_zeros = find(im_in < 10);
 
 % Equalizando a imagem
 imeq  = histeq(im_in);
