@@ -1,20 +1,18 @@
+% OBS: ESTE CÓDIGO FUNCIONA SOMENTE NO OCTAVE. RESULTADOS INESPERADOS PODEM
+% SURGIR NO MATLAB.
+
+% pkg load image
+clear, clc
 % Lendo a imagem original
-im_in = imread('../imagens-base/Im_original.jpg');
-
-% Buscando os indices dos pixels que possuem valor zero
-indices_zeros = find(im_in < 10);
-
-% Equalizando a imagem
-imeq  = histeq(im_in);
-
-% Copia da imagem equalizada
-im_eq_modificada = imeq;
-
-% Reestabelecendo a cor 0 nos pixels que eram 0 originalmente
-im_eq_modificada(indices_zeros) = 0;
-
+im_in = imread('../imagens-base/mamaoriginal.jpg');
 % Lendo imagem com filtro do Instagram
 im_insta = imread('resultados/im_insta.jpg');
+
+im_copia = double(im_in);
+im_copia(im_copia==0)=NaN;
+im_eq_copia = histeq(im_copia);
+imeq  = histeq(im_in);
+im_copia = uint8(im_copia);
 
 % EQUALIZACAO
 figure
@@ -36,10 +34,10 @@ title("Histogram");
 
 % Imagem equalizada com preto modificado
 subplot(2,4,3);
-imshow(im_eq_modificada);
-title("Equalized modified");
+imshow(im_eq_copia);
+title("Imagem modified");
 subplot(2,4,7);
-imhist(im_eq_modificada);
+imhist(im_eq_copia);
 title("Histogram");
 
 % Filtro instagram
