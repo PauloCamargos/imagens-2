@@ -1,4 +1,4 @@
-im_in  = double( imread('../imagens/mamaoriginal.jpg') );
+im_in  = double( imread('../imagens-base/mamaoriginal.jpg') );
 
 r = 0:255;
 
@@ -56,23 +56,27 @@ im_out = s ( im_in + 1);
 %---------------------------------------------------------------------
 %show imagem original
 
-subplot( 1, 3, 1 ); imshow( mat2gray( im_in ) );
+subplot( 2, 3, 1 ); imshow( mat2gray( im_in ) );
 title("Original");
+
+subplot(2,3, 4); imhist(im_in);
 %---------------------------------------------------------------------
 %show plot de funcao
 
-subplot( 1, 3, 2 ); plot( r , s );
+subplot( 2, 3, 2 ); plot( r , s );
 axis( [ 0, 255, 0, 255 ] );
 title("Histograma");
 
-xlabel('r')
-ylabel('s(r)')
+xlabel('r');
+ylabel('s(r)');
+
 
 %---------------------------------------------------------------------
 %show imagem processada
 
-subplot( 1, 3, 3 ); imshow( mat2gray( im_out ) );
+subplot( 2, 3, 3 ); imshow( mat2gray( im_out ) );
 title("Processada");
+subplot(2, 3, 6); imhist(im_out);
 
 %---------------------------------------------------------------------
 
