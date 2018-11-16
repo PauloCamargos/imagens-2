@@ -1,8 +1,8 @@
 % PROGRAMA PARA APLICAÇÃO DE FILTROS DERIVATIVOS %
-pkg load image
+% pkg load image
 
 % Lendo imagens originais
-mama_original = imread('../imagens-base/mamaoriginal.jpg');
+mama_original = imread('../imagens-base/Im_original.jpg');
 fratura_joelho = imread('../imagens-base/FraturaJoelho.jpg');
 
 % Declarando as máscaras

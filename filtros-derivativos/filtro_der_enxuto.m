@@ -1,10 +1,10 @@
 % PROGRAMA PARA APLICAÇÃO DE FILTROS DERIVATIVOS %
-pkg load image
+% pkg load image
 
 % Lendo imagens originais
 imagens = {
-  imread('../imagens-base/mamaoriginal.jpg');
-  imread('../imagens-base/FraturaJoelho.jpg')
+  imread('../imagens-base/Im_original.jpg');
+  imread('../imagens-base/RXjoelho.jpg')
 };
 
 % Declarando as máscaras
@@ -28,9 +28,9 @@ titulos = {
   "Roberts quatro (-1)"; 
   "Roberts quatro rotacionado (-1)";
   "Roberts dois horizontal";
-  "Roberts dois horizontal rot.";
+  "Roberts dois horizontal rotac";
   "Roberts dois vertical";
-  "Roberts dois vertical rot.";  
+  "Roberts dois vertical rotac";  
   "Robert quatro";
   "Roberto quatro rotacionado"; 
   "Prewitt";
@@ -38,7 +38,6 @@ titulos = {
   "Sobel";
   "Sobel rotacionado"
 };
-
 
 % saidas - MAMA ORIGINAL
 qnt_img_originais = 2;
@@ -48,7 +47,7 @@ for i=1:qnt_img_originais
   % Grad Quatro
   for j=1:qnt_mascaras
     imagens{i, j+1} = imagens{i, 1} + imfilter(imagens{i,1}, mascaras{j,1}); % salvando array com {imagem original, resultado masc. 1, 2,..., resultado masc. n}
-    figura = figure
+    figura = figure;
     subplot(1, 2, 1);
     imshow(uint8(imagens{i, 1}));
     title(titulos{1, 1});
@@ -57,9 +56,12 @@ for i=1:qnt_img_originais
     imshow(uint8(imagens{i, j+1}));
     title(titulos{j+1, 1});
 
-    % saveas(fig,filename,formattype)
+    % saveas(figura,strcat("./resultados/",num2str(i),'-',titulos{j+1, 1}),'png')
 
-    pause(0.8);
+    disp(titulos{j+1, 1});
+    disp(mascaras{j,1});
+    
+    % pause(0.2);
   end
 end
 
