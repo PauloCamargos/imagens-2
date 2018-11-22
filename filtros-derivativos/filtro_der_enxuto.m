@@ -56,7 +56,7 @@ for i=1:qnt_img_originais
     imshow(uint8(imagens{i, j+1}));
     title(titulos{j+1, 1});
 
-    % saveas(figura,strcat("./resultados/",num2str(i),'-',titulos{j+1, 1}),'png')
+    saveas(figura,strcat("./resultados/",num2str(i),'-',titulos{j+1, 1}),'png')
 
     disp(titulos{j+1, 1});
     disp(mascaras{j,1});
