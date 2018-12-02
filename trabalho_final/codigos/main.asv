@@ -448,12 +448,12 @@ for i=1:2
     filtro_laplace_quatro_positivo = [0 -1 0; -1 4 -1; 0 -1 0];
     filtro_laplace_oito_negativo = [1 1 1; 1 -8 1; 1 1 1];
     filtro_laplace_oito_positivo = [-1 -1 -1; -1 8 -1; -1 -1 -1];
-    
+        
     out_laplace_quatro_negativo      = imfilter(matriz, filtro_laplace_quatro_negativo);
     out_laplace_quatro_positivo    = imfilter(matriz, filtro_laplace_quatro_positivo);
     out_laplace_oito_negativo     = imfilter(matriz, filtro_laplace_oito_negativo);
     out_laplace_oito_positivo     = imfilter(matriz, filtro_laplace_oito_positivo);
-    
+
     figure
     subplot(1,3,1);
     imshow(uint8(matriz));
@@ -466,10 +466,6 @@ for i=1:2
     subplot(1,3,3);
     imshow(uint8(matriz + out_laplace_quatro_negativo));
     title("Res. Laplace Quatro Negativo");
-    
-    filename = horzcat(sprintf('../resultados/filtro_espacial/flaplace-4-neg-im-%i',i),'.png');
-    disp(filename)
-    saveas(gcf,filename)
     
     %%%
     figure
@@ -485,12 +481,8 @@ for i=1:2
     imshow(uint8(matriz + out_laplace_quatro_positivo));
     title("Res. Laplace Quatro Positivo");
     
-    filename = horzcat(sprintf('../resultados/filtro_espacial/flaplace-4-pos-im-%i',i),'.png');
-    disp(filename)
-    saveas(gcf,filename)
-    
     %%%
-    
+   
     figure
     subplot(1,3,1);
     imshow(uint8(matriz));
@@ -504,11 +496,7 @@ for i=1:2
     imshow(uint8(matriz + out_laplace_oito_negativo));
     title("Res. Laplace Oito Negativo");
     
-    filename = horzcat(sprintf('../resultados/filtro_espacial/flaplace-8-neg-im-%i',i),'.png');
-    disp(filename)
-    saveas(gcf,filename)
-    
-    %%%
+    %%% 
     
     figure
     subplot(1,3,1);
@@ -524,11 +512,13 @@ for i=1:2
     title("Res .Laplace Oito Positivo");
     
     
-    filename = horzcat(sprintf('../resultados/filtro_espacial/flaplace-8-pos-im-%i',i),'.png');
+    filename = horzcat(sprintf('../resultados/filtro_espacial/flaplace-im-%i',i),'.png');
     disp(filename)
     saveas(gcf,filename)
     
 end
+
+
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
