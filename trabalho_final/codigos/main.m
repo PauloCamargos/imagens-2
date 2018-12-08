@@ -1,5 +1,5 @@
 %%
-% TRABALHO FINAL DE IMAGENS 2 - PORTIFÃ“LIO
+% TRABALHO FINAL DE IMAGENS 2 - PORTIFOLIO
 % Autor: Paulo Camargos Silva (https://github.com/PauloCamargos)
 % Data: 0/12/2013
 %%
@@ -20,11 +20,17 @@ imagens = {
 % equalizacao(imagens);
 % transformacao_intensidade(imagens);
 % filtro_suavizacao(imagens);
-filtro_espacial(imagens);
+% filtro_espacial(imagens);
+% filtro_derivativo(imagens);
+% filtro_frequencias(imagens);
+restauracao(imagens);
 
 close all;
-clear, clc;
-
+% clear, clc;
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% BRILHO E CONTRASTE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function brilho_contraste(imagens)
 
 % Fatores de soma/multiplicacao: [+bri, -bri, +cont, -cont]
@@ -174,7 +180,7 @@ for i=1:2
     close all;
 end
 end
-
+%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Funcoes de transformacao de intensidade
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -367,7 +373,7 @@ for i=1:2
 end
 end
 
-
+%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Filtro de suavizacao (borda...)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -435,7 +441,7 @@ for i=1:2
 end
 
 end
-
+%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Filtros espaciais de realce (laplace, quatro/oito pos/neg)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -534,15 +540,340 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Filtros derivativos
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+function filtro_derivativo(imagens)
 
+% Declarando as máscaras
+mascaras = {
+    [-1 0 ; 0 1];             % roberts quatro (-1)
+    %   [0 -1; 1 0];              % roberts quatro rot. (-1)
+    %   [-1 1];                   % roberts dois hori
+    %   [1 -1];                   % robets dois hori rot
+    %   [-1 ; 1];                 % roberts dois vert
+    %   [1 ; -1];                 % roberts dois vert rot
+    %   [1 0; 0 -1];              % roberts quatro
+    %   [0 1; -1 0];              % roberts quatro rot.
+    [-1 -1 -1; 0 0 0; 1 1 1]; % prewitt
+    %   [-1 0 1; -1 0 1;-1 0 1];  % prewitt rotacionado
+    [-1 -2 -1; 0 0 0; 1 2 1]; % sobel
+    %   [-1 0 1; -2 0 2; -1 0 1] % sobel rotacionado
+    };
 
+titulos = {
+    "Original";
+    "Roberts-quatro";
+    %   "Roberts quatro rotacionado (-1)";
+    %   "Roberts dois horizontal";
+    %   "Roberts dois horizontal rotac";
+    %   "Roberts dois vertical";
+    %   "Roberts dois vertical rotac";
+    %   "Robert quatro";
+    %   "Roberto quatro rotacionado";
+    "Prewitt";
+    %   "Prewitt rotacionado";
+    "Sobel";
+    %   "Sobel rotacionado"
+    };
+
+qnt_img_originais = 2;
+qnt_mascaras = 3;
+
+for i=1:qnt_img_originais
+    % Grad Quatro
+    for j=1:qnt_mascaras
+        imagens{i, j+1} = imagens{i, 1} + imfilter(imagens{i,1}, mascaras{j,1}); % salvando array com {imagem original, resultado masc. 1, 2,..., resultado masc. n}
+        figure;
+        subplot(1, 2, 1);
+        imshow(uint8(imagens{i, 1}));
+        title(titulos{1, 1});
+        
+        subplot(1, 2, 2);
+        imshow(uint8(imagens{i, j+1}));
+        title(titulos{j+1, 1});
+        
+        filename = horzcat(sprintf('../resultados/filtro_derivativo/derivativos-im-%i-%s',i,titulos{j+1, 1}),'.png');
+        disp(filename)
+        disp(titulos{j+1, 1})
+        saveas(gcf,filename)
+    end
+end
+
+% prompt = 'Fechar figuras? Y/N [Y]: ';
+% str = input(prompt,'s');
+% if isempty(str)
+%     str = 'Y';
+% end
+%
+% if str=='Y' || str=='y'
+%   close all
+% else
+%   pause(60)
+% end
+%
+% disp("Programa finalizado!");
+
+end
+%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Filtros de frequencias
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
+function filtro_frequencias(imagens)
+for i=1:2
+    ImOriginal = imagens{i,1};
+    
+    %FFT2 faz a transformada de fourier
+    espectro=fft2 (double(ImOriginal));
+    
+    %FFTSHIFT centraliza o espectroc
+    espectroC=fftshift(espectro);  % centro do espectro eh a freque mais baixa
+    
+    %visualiza??o do espectro
+    
+    EspLog=abs(espectroC);
+    EspLog=20*log(1+EspLog);
+    EspLog=uint8(EspLog);
+    
+    %processamento no dominio da frequencia
+    
+    %Contruindo Fitro Notch % Seleciona o tom medio (frequencia mais baixa) da imagem
+    
+    % o filtro (H(u,v)) deve conter o mesmo numero de pontos da imagem original(F(u,v));
+    % G(u,v) = H(u,v).*F(u,v)
+    
+    [rows, cols ] = size ( ImOriginal )
+    
+    % remover ponto central ( freq = 0 )
+    mask = ones ( rows, cols ); %cria uma m?scara de mesma dimens?o da imagem original com valores um (1);
+    
+    mask ( ceil( rows / 2 ) + 1, ceil( cols / 2 ) + 1 ) = 0;
+    
+    fnotch = mask .* espectroC;
+    
+    Saida = ifftshift( fnotch );
+    
+    %mostrar parte real da fun??o
+    
+    im_out = uint8( real ( ifft2 ( Saida ) ));
+    
+    
+    
+    media = sum ( ImOriginal(:) ) / ( rows * cols )
+    
+    %     figure (2);
+    %
+    %     subplot(1,4,1);
+    %     imshow(ImOriginal);
+    %     title(' imagem original');
+    %
+    %     subplot(1,4,2);
+    %
+    %
+    %     imshow(im_out);
+    %     title(' imagem filtrada_Notch');
+    %
+    %     imMedia=abs(ImOriginal-media);
+    %
+    %     subplot(1,4,3);
+    %     imshow(uint8(imMedia));
+    %     title(' Original menos m?dia');
+    
+    
+    
+    
+    %Filtro passa baixa quadrado
+    
+    
+    maskIdealQ=zeros ( rows, cols ); %cria uma m?scara de mesma dimens?o da imagem original com valores um (0);
+    
+    diametro_quadrado = 100;
+    
+    maskIdealQ((rows/2 - diametro_quadrado):(rows/2 +diametro_quadrado), (cols/2 -diametro_quadrado) : (cols/2 + diametro_quadrado)  ) = 1;
+    
+    
+    fpbIdeal=espectroC.*maskIdealQ;
+    
+    saidaIdeal= ifftshift(fpbIdeal);
+    
+    im_outIdeal = uint8 (real (ifft2(saidaIdeal)));
+    
+    figure;
+    subplot (1,4,1);
+    imshow(uint8(ImOriginal));
+    titulo = sprintf('Original');
+    title(titulo);
+    
+    subplot(1,4,2);
+    imshow(maskIdealQ);
+    titulo = sprintf('Mascara (diam=%d)',diametro_quadrado);
+    title(titulo);
+    
+    subplot (1,4,3);
+    imshow(im_outIdeal);
+    titulo = sprintf('Fitrada PBI');
+    title(titulo);
+    
+    subplot (1,4,4);
+    imshow(uint8(im_outIdeal + ImOriginal));
+    titulo = sprintf('Resultado');
+    title(titulo);
+    
+    filename = horzcat(sprintf('../resultados/filtro_frequencias/PB-im-%i',i),'.png');
+    disp(filename)
+    saveas(gcf,filename)
+    
+    %     subplot (1,4,4);
+    %     imshow(im_outIdeal);
+    %     title(strcat('Fitrada PBI corte20', diametro_quadrado));
+    %
+    %     figure(1);
+    %     subplot (1,3,1);
+    %     imshow(ImOriginal);
+    %     subplot(1,3,2);
+    %     imshow(EspLog);
+    %     subplot (1,3,3);
+    %     imshow(maskIdealQ);
+    %
+    % Filtro passa alta
+    maskIdealQ=zeros ( rows, cols ); %cria uma m?scara de mesma dimens?o da imagem original com valores um (0);
+    
+    diametro_quadrado = 20;
+    
+    maskIdealQ((rows/2 - diametro_quadrado):(rows/2 +diametro_quadrado), (cols/2 -diametro_quadrado) : (cols/2 + diametro_quadrado)  ) = 1;
+    maskIdealQ = 1 - maskIdealQ;
+    
+    fpaIdeal=espectroC.*maskIdealQ;
+    
+    saidaIdeal= ifftshift(fpaIdeal);
+    
+    im_outIdeal = uint8 (real (ifft2(saidaIdeal)));
+    figure;
+    
+    subplot (1,4,1);
+    imshow(uint8(ImOriginal));
+    titulo = sprintf('Original');
+    title(titulo);
+    
+    subplot(1,4,2);
+    imshow(maskIdealQ);
+    titulo = sprintf('Mascara (diam=%d)',diametro_quadrado);
+    title(titulo);
+    
+    subplot (1,4,3);
+    imshow(im_outIdeal);
+    titulo = sprintf('Fitrada PAI');
+    title(titulo);
+    
+    subplot (1,4,4);
+    imshow(uint8(im_outIdeal + ImOriginal));
+    titulo = sprintf('Resultado');
+    title(titulo);
+    
+    filename = horzcat(sprintf('../resultados/filtro_frequencias/PA-im-%i',i),'.png');
+    disp(filename)
+    saveas(gcf,filename)
+    
+    input('Aperte qualquer tecla para sair...');
+end
+end
+%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Tecnicas de restauracao
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+function restauracao(imagens)
+for i=1:2
+    % Carregando imagem original
+    imoriginal = double(imagens{i,1});
+    
+    % Cálculo da variancia da imagem original
+    variancia_imoriginal = var(imoriginal(:));
+    disp('Original 3: ');
+    disp(variancia_imoriginal);
+    
+    % Obs.: quanto maior o contraste, maior a var. de uma imagem. Deve-se avaliar
+    % o valor da var. juntamente como o tipo de filtro aplicado.
+    
+    % Aplicação dos Filtros
+    
+    % Media 3x3 variancia
+    media3 = fspecial('average',3);
+    imagem_media3 = imfilter(imoriginal, media3);
+    var_media3 = var(imagem_media3(:));
+    disp('Var 3x3: ');
+    disp(var_media3);
+    
+    % Media 7x7 e variancia
+    media7 = fspecial('average',7);
+    imagem_media7 = imfilter(imoriginal, media7);
+    var_media7 = var(imagem_media7(:));
+    disp('Var 7x7: ');
+    disp(var_media7);
+    
+    % Mediana 3x3 e variancia
+    imagem_mediana3 = medfilt2(imoriginal); % 3x3 default
+    var_mediana3 = var(imagem_mediana3(:))
+    disp('Var mediana 3x3: ');
+    disp(var_mediana3);
+%     figura1 = figure(1)
+%     imshow(imagem_mediana3, [0,255]);
+%     saveas(figura1, 'resultados/melhor_mediana_3.png');
+    
+    % Media geométrica
+    I = imoriginal;
+    tam = 3;
+    colzero = zeros(size(I,1), (tam-1)/2);
+    linzero = zeros((tam-1)/2, size(I,2) + (tam-1));
+    
+    Iz = [colzero I colzero];
+    Iz = [linzero; Iz ; linzero];
+    
+    imagem_geometrica3 = uint8(zeros(size(imoriginal)));
+    
+    for l = 1:size(I, 1)
+        for c = 1:size(I, 2)
+            janela = Iz(l : l + (tam-1), c:c  + (tam-1));
+            imagem_geometrica3(l,c) = (prod(janela(:)))^(1/(tam*tam));
+        end
+    end
+    
+    var_geometrica3 = var(double(imagem_geometrica3(:)));
+    disp('Var geometrica: ');
+    disp(var_geometrica3);
+%     imshow(imagem_geometrica3);
+    
+    % Plotando as imagens
+    figure;
+    subplot(2,2,1);
+    imshow(imagem_media3, [0,255]);
+    str = sprintf('Media 3x3 e var = %d', round(var_media3));
+    title(str);
+    
+    subplot(2,2,2);
+    imshow(imagem_media7, [0,255]);
+    str = sprintf('Media 7x7 e var = %d', round(var_media7));
+    title(str);
+    
+    subplot(2,2,3);
+    imshow(imagem_mediana3, [0,255]);
+    str = sprintf('Mediana 3x3 e var = %d', round(var_mediana3));
+    title(str);
+    
+    subplot(2,2,4);
+    imshow(imagem_geometrica3, [0,255]);
+    str = sprintf('M. Geometrica e var = %d', round(var_geometrica3));
+    title(str);
 
+    filename = horzcat(sprintf('../resultados/restauracao/restauracao-im-%i',i),'.png');
+    disp(filename)
+    saveas(gcf,filename)    
+    
+    figure;
+    imshow(imoriginal,[0,255])
+    title('Original');
+
+    filename = horzcat(sprintf('../resultados/restauracao/original-im-%i',i),'.png');
+    disp(filename);
+    saveas(gcf,filename);  
+        
+    input('Quit code? ');
+end
+end
 
