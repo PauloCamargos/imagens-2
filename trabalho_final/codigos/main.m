@@ -18,12 +18,12 @@ imagens = {
 % executando as funcões
 % brilho_contraste(imagens);
 % equalizacao(imagens);
-% transformacao_intensidade(imagens);
+transformacao_intensidade(imagens);
 % filtro_suavizacao(imagens);
 % filtro_espacial(imagens);
 % filtro_derivativo(imagens);
 % filtro_frequencias(imagens);
-restauracao(imagens);
+% restauracao(imagens);
 
 close all;
 % clear, clc;
@@ -69,32 +69,32 @@ for i=1:2
     figura_brilho = figure;
     subplot(2,3,1);
     imshow(uint8(imagens{i,1})); % img original
-    titulo = horzcat(titulos{1,1},sprintf(" med = %d",round(medias(i,1))));
+    titulo = horzcat('Original',sprintf(" med = %d",round(medias(i,1))));
     title(titulo)
     
     subplot(2,3,4);
     imhist(uint8(imagens{i,1})); % hist img original
-    title(horzcat('Hist. ', titulos{1,1}));
+    title(horzcat('Hist. ', 'Original'));
     
     %%%%%%%% mais brilho
     subplot(2,3,2);
     imshow(uint8(imagens{i,2})); % mais brilho
-    titulo = horzcat(titulos{1,1},sprintf(" med = %d",round(medias(i,2))));
+    titulo = horzcat('Mais brilho',sprintf(" med = %d",round(medias(i,2))));
     title(titulo)
     
     subplot(2,3,5);
     imhist(uint8(imagens{i,2})); % hist mais brilho
-    title(horzcat('Hist. ', titulos{1,2}));
+    title(horzcat('Hist. ', 'Mais brilho'));
     
     %%%%%%% menos brilho
     subplot(2,3,3);
     imshow(uint8(imagens{i,3})); % img menos brilho
-    titulo = horzcat(titulos{1,1},sprintf(" med = %d",round(medias(i,3))));
+    titulo = horzcat('Menos brilho',sprintf(" med = %d",round(medias(i,3))));
     title(titulo)
     
     subplot(2,3,6);
     imhist(uint8(imagens{i,3})); % hist img menos brilho
-    title(horzcat('Hist. ', titulos{1,3}));
+    title(horzcat('Hist. ','Menos brilho'));
     
     filename = horzcat(sprintf('../resultados/brilho_contraste/brilho-im-%i',i),'.png');
     disp(filename)
@@ -107,32 +107,32 @@ for i=1:2
     figura_constraste = figure;
     subplot(2,3,1);
     imshow(uint8(imagens{i,1})); % img original
-    titulo = horzcat(titulos{1,1},sprintf(" med = %d",round(medias(i,1))));
+    titulo = horzcat('Original',sprintf(" med = %d",round(medias(i,1))));
     title(titulo)
     
     subplot(2,3,4);
     imhist(uint8(imagens{i,1})); % hist img original
-    title(horzcat('Hist. ', titulos{1,1}));
+    title(horzcat('Hist. ', 'Original'));
     
     %%%%%%%% mais contraste
     subplot(2,3,2);
     imshow(uint8(imagens{i,4})); % img mais contraste
-    titulo = horzcat(titulos{1,1},sprintf(" med = %d",round(medias(i,4))));
+    titulo = horzcat('Mais contraste',sprintf(" med = %d",round(medias(i,4))));
     title(titulo)
     
     subplot(2,3,5);
     imhist(uint8(imagens{i,4})); % hist img mais contraste
-    title(horzcat('Hist. ', titulos{1,4}));
+    title(horzcat('Hist. ', 'Mais contraste'));
     
     %%%%%%% menos contraste
     subplot(2,3,3);
     imshow(uint8(imagens{i,5})); % img menos contraste
-    titulo = horzcat(titulos{1,1},sprintf(" med = %d",round(medias(i,5))));
+    titulo = horzcat('Menos contraste',sprintf(" med = %d",round(medias(i,5))));
     title(titulo)
     
     subplot(2,3,6);
     imhist(uint8(imagens{i,5})); % hist img menos contraste
-    title(horzcat('Hist. ', titulos{1,5}));
+    title(horzcat('Hist. ', 'Menos contraste'));
     
     filename = horzcat(sprintf('../resultados/brilho_contraste/constraste-im-%i',i),'.png');
     disp(filename)
@@ -301,9 +301,9 @@ for i=1:2
     
     %potencia
     figure
-    factor = 10;
+    factor = 5;
     s( 1 + r ) = ( 255 / ( 255 .^ factor ) ) * ( r .^ factor );
-    s( 1 + r ) = r;
+%     s( 1 + r ) = r;
     im_out = s ( im_in + 1);
     %show imagem original
     subplot(1,3,1);
