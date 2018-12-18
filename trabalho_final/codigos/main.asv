@@ -332,8 +332,8 @@ for i=1:2
     %por faixas
     figure
     r0 = 0 ; s0 = 0;
-    r1 = 10 ; s1 = 50;
-    r2 = 150; s2 = 230;
+    r1 = 5 ; s1 = 190;
+    r2 = 130; s2 = 210;
     r3 = 255; s3 = 255;
     
     r = r0:r1;
@@ -370,7 +370,7 @@ for i=1:2
     imshow( mat2gray( im_out ) );
     title("Processada");
     
-    filename = horzcat(sprintf('../resultados/transformacao_intensidade/faixas-im-%i-faixa-2',i),'.png');
+    filename = horzcat(sprintf('../resultados/transformacao_intensidade/faixas-im-%i-faixa-1',i),'.png');
     disp(filename)
     saveas(gcf,filename)
     %---------------------------------------------------------------------
