@@ -22,11 +22,11 @@ imagens = {
 
 % brilho_contraste(imagens);
 % equalizacao(imagens);
-transformacao_intensidade(imagens);
+% transformacao_intensidade(imagens);
 % filtro_suavizacao(imagens);
 % filtro_espacial(imagens);
 % filtro_derivativo(imagens);
-% filtro_frequencias(imagens);
+filtro_frequencias(imagens);
 % restauracao(imagens);
 
 close all;
@@ -217,7 +217,7 @@ for i=1:2
     
     filename = horzcat(sprintf('../resultados/transformacao_intensidade/negativo-im-%i',i),'.png');
     disp(filename)
-    % saveas(gcf,filename);
+    saveas(gcf,filename);
     
     %---------------------------------------------------------------------
     %---------------------------------------------------------------------
@@ -242,7 +242,7 @@ for i=1:2
     
     filename = horzcat(sprintf('../resultados/transformacao_intensidade/identidade-im-%i',i),'.png');
     disp(filename)
-    % saveas(gcf,filename)
+    saveas(gcf,filename)
     
     %---------------------------------------------------------------------
     %---------------------------------------------------------------------
@@ -270,7 +270,7 @@ for i=1:2
     
     filename = horzcat(sprintf('../resultados/transformacao_intensidade/log-im-%i-fator-%i',i,factor),'.png');
     disp(filename)
-    % saveas(gcf,filename)
+    saveas(gcf,filename)
     
     %---------------------------------------------------------------------
     %---------------------------------------------------------------------
@@ -298,7 +298,7 @@ for i=1:2
     
     filename = horzcat(sprintf('../resultados/transformacao_intensidade/exp-im-%i-fator-%i',i,factor),'.png');
     disp(filename)
-    % saveas(gcf,filename)
+    saveas(gcf,filename)
     
     %---------------------------------------------------------------------
     %---------------------------------------------------------------------
@@ -325,7 +325,7 @@ for i=1:2
     
     filename = horzcat(sprintf('../resultados/transformacao_intensidade/potencia-im-%i-fator-%i',i,factor),'.png');
     disp(filename)
-    % saveas(gcf,filename)
+    saveas(gcf,filename)
     
     %---------------------------------------------------------------------
     %---------------------------------------------------------------------
@@ -399,7 +399,7 @@ for i=1:2
     
     subplot(1,2,2);
     imshow(uint8(imagem_media3));
-    titulo = sprintf('Media 1/9');
+    titulo = sprintf('Media 3x3');
     title(titulo);
     
     filename = horzcat(sprintf('../resultados/suavizacao/media33-im-%i',i),'.png');
@@ -417,7 +417,7 @@ for i=1:2
     
     subplot(1,2,2);
     imshow(uint8(imagem_media7));
-    titulo = sprintf('Media 1/7');
+    titulo = sprintf('Media 7x7');
     title(titulo);
     
     filename = horzcat(sprintf('../resultados/suavizacao/media77-im-%i',i),'.png');
@@ -439,7 +439,7 @@ for i=1:2
     
     filename = horzcat(sprintf('../resultados/suavizacao/mediana33-im-%i',i),'.png');
     disp(filename)
-    saveas(gcf,filename)
+    saveas(gcf,filename)   
     
     
 end
@@ -700,22 +700,22 @@ for i=1:2
     im_outIdeal = uint8 (real (ifft2(saidaIdeal)));
     
     figure;
-    subplot (1,4,1);
+    subplot (2,2,1);
     imshow(uint8(ImOriginal));
     titulo = sprintf('Original');
     title(titulo);
     
-    subplot(1,4,2);
+    subplot(2,2,2);
     imshow(maskIdealQ);
     titulo = sprintf('Mascara (diam=%d)',diametro_quadrado);
     title(titulo);
     
-    subplot (1,4,3);
+    subplot (2,2,3);
     imshow(im_outIdeal);
     titulo = sprintf('Fitrada PBI');
     title(titulo);
     
-    subplot (1,4,4);
+    subplot (2,2,4);
     imshow(uint8(im_outIdeal + ImOriginal));
     titulo = sprintf('Resultado');
     title(titulo);
@@ -751,22 +751,22 @@ for i=1:2
     im_outIdeal = uint8 (real (ifft2(saidaIdeal)));
     figure;
     
-    subplot (1,4,1);
+    subplot (2,2,1);
     imshow(uint8(ImOriginal));
     titulo = sprintf('Original');
     title(titulo);
     
-    subplot(1,4,2);
+    subplot(2,2,2);
     imshow(maskIdealQ);
     titulo = sprintf('Mascara (diam=%d)',diametro_quadrado);
     title(titulo);
     
-    subplot (1,4,3);
+    subplot (2,2,3);
     imshow(im_outIdeal);
     titulo = sprintf('Fitrada PAI');
     title(titulo);
     
-    subplot (1,4,4);
+    subplot (2,2,4);
     imshow(uint8(im_outIdeal + ImOriginal));
     titulo = sprintf('Resultado');
     title(titulo);
