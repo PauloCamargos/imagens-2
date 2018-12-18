@@ -1,7 +1,7 @@
 %%
-% TRABALHO FINAL DE IMAGENS 2 - PORTIFOLIO
+% TRABALHO FINAL DE IMAGENS 2 - PORTFOLIO
 % Autor: Paulo Camargos Silva (https://github.com/PauloCamargos)
-% Data: 0/12/2013
+% Data: 8/12/2018
 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % BASE
@@ -10,12 +10,16 @@
 clear; clc;
 
 % Leitura das imagens
+% Atualize aqui o caminho para suas imagems.
 imagens = {
     imread('../imagens-base/PauloCamargos_RM pescoco4.jpg');
     imread('../imagens-base/PauloCamargos_RMabdomen.jpg');
     };
 
-% executando as funcões
+%%
+% Chamada de funções para geração das imagens. Descomente as funções em que se deseja 
+% gerar imagens. Observe o caminho de saída das imagens. 
+
 % brilho_contraste(imagens);
 % equalizacao(imagens);
 transformacao_intensidade(imagens);
